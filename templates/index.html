@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vegetable Price Predictor</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .prediction-form {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .form-bg {
+            background: linear-gradient(rgba(0, 128, 0, 0.1), rgba(0, 128, 0, 0.1)),
+                        url('/api/placeholder/1920/1080') center/cover no-repeat;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="form-bg">
+    <div class="container mx-auto px-4 py-12">
+        <div class="max-w-2xl mx-auto">
+            <div class="prediction-form rounded-2xl shadow-xl p-8">
+                <h1 class="text-3xl font-bold text-center mb-8 text-green-600">
+                    Vegetable Price Predictor
+                </h1>
+                
+                <form action="{{ url_for('predict') }}" method="POST" class="space-y-6">
+                    <!-- Vegetable Selection -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Select Vegetable
+                        </label>
+                        <select name="vegetable" required
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+                            {% for vegetable in vegetables %}
+                            <option value="{{ vegetable }}">{{ vegetable }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Weather Conditions -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Temperature (°C)
+                            </label>
+                            <input type="number" name="temperature" required
+                                   class="w-full p-2 border border-gray-300 rounded-md" required min="0" max="65">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Rainfall (mm)
+                            </label>
+                            <input type="number" name="rainfall" required
+                                   class="w-full p-2 border border-gray-300 rounded-md"  min="0" max="300">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Humidity (%)
+                            </label>
+                            <input type="number" name="humidity" required
+                                   class="w-full p-2 border border-gray-300 rounded-md"  min="0" max="100">
+                        </div>
+                    </div>
+
+                    <!-- Market Conditions -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Demand (50-99)
+                            </label>
+                            <input type="number" name="demand" min="50" max="99" required
+                                   class="w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Freshness (1-5)
+                            </label>
+                            <input type="number" name="freshness" min="1" max="5" required
+                                   class="w-full p-2 border border-gray-300 rounded-md"  min="1" max="5">
+                        </div>
+                    </div>
+
+                    <!-- Economic Factors -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Inflation Rate (%)
+                            </label>
+                            <input type="number" name="inflation" step="0.1" required
+                                   class="w-full p-2 border border-gray-300 rounded-md"  min="0" max="100">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Yield per Hectare (kg)
+                            </label>
+                            <input type="number" name="yield_per_hectare" required
+                                   class="w-full p-2 border border-gray-300 rounded-md"  min="1" max="500">
+                        </div>
+                    </div>
+
+                    <!-- Other Factors -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Season
+                            </label>
+                            <select name="season" required
+                                    class="w-full p-2 border border-gray-300 rounded-md">
+                                {% for season in seasons %}
+                                <option value="{{ season }}">{{ season }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Natural Disaster
+                            </label>
+                            <select name="disaster" required
+                                    class="w-full p-2 border border-gray-300 rounded-md">
+                                {% for disaster in disasters %}
+                                <option value="{{ disaster }}">{{ disaster }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Holiday/Festival
+                            </label>
+                            <select name="holiday_festival" required
+                                    class="w-full p-2 border border-gray-300 rounded-md">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="submit"
+                                class="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-colors">
+                            Predict Price
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
